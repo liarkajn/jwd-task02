@@ -10,13 +10,14 @@ import by.epam.task02.entity.Tag;
 import by.epam.task02.entity.TextTag;
 
 import java.io.*;
+import java.net.URL;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class XmlParserDAOImpl implements ParserDAO {
 
-    private static final String PATH = "./src/main/resources/task02.xml";
+    private static final String FILENAME = "task02.xml";
 
     private static final String TAG_RECOGNIZER = "(<.*?>)|([^<]+)";
     private static final String OPEN_TAG_STYLE_CHECKER = "<([a-zA-Z][-_\\w]+)((\\s+[a-zA-Z][-_\\w]+=\"[^\"]+\")*)(\\s?/?)>";
@@ -28,7 +29,7 @@ public class XmlParserDAOImpl implements ParserDAO {
     private Stack<Entity> stack = new Stack<>();
 
     public Entity parse() throws DAOException {
-        File path = new File(PATH);
+        File path = new File(getResourcePath());
         processFile(path);
         try {
             if (stack.size() > 1) {
@@ -38,6 +39,14 @@ public class XmlParserDAOImpl implements ParserDAO {
             throw new DAOException(ex.getMessage());
         }
         return stack.pop();
+    }
+
+    private String getResourcePath() throws DAOException{
+        URL url = getClass().getClassLoader().getResource(FILENAME);
+        if (url == null) {
+            throw new DAOException("File not found");
+        }
+        return url.getPath();
     }
 
     private void processFile(File path) throws DAOException {
