@@ -1,6 +1,8 @@
 package by.epam.task02.entity;
 
-public class TextTag extends Entity {
+import java.io.Serializable;
+
+public class TextTag extends Entity implements Serializable {
 
     private String body = "";
 

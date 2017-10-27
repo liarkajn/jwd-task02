@@ -1,11 +1,12 @@
 package by.epam.task02.entity;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class Tag extends Entity {
+public class Tag extends Entity implements Serializable {
 
     private String name;
     private Map<String, String> params = new LinkedHashMap<>();
@@ -47,11 +48,8 @@ public class Tag extends Entity {
     }
 
     private boolean compareFields(Tag tag) {
-        if (!name.equals(tag.name) || !params.equals(tag.params)
-                || !innerTags.equals(tag.innerTags)) {
-            return false;
-        }
-        return true;
+        return !(!name.equals(tag.name) || !params.equals(tag.params)
+                || !innerTags.equals(tag.innerTags));
     }
 
     @Override
